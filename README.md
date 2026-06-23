@@ -2,6 +2,9 @@
 
 An ambient, event-driven ReAct agent built with the **Google Agent Development Kit (ADK) 2.0**. This agent automatically reviews, de-identifies, and routes corporate expense approvals based on financial limits and security policies.
 
+🚀 **Deployed Live Service URL:** [https://ambient-expense-agent-639117196486.us-central1.run.app](https://ambient-expense-agent-639117196486.us-central1.run.app)  
+📌 **Pub/Sub Trigger Webhook:** `https://ambient-expense-agent-639117196486.us-central1.run.app/apps/expense_agent/trigger/pubsub`
+
 ---
 
 ## 🏗️ Architecture & De-Identification Flow
