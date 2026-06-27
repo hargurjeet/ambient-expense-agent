@@ -633,12 +633,15 @@ async def chat_endpoint(request: Request):
             for part in e.content.parts:
                 if part.text:
                     outputs.append(part.text)
-        if e.tool_calls:
-            for tc in e.tool_calls:
-                if tc.name == "adk_request_input":
-                    interrupt = tc.args
-                    if isinstance(tc.args, dict) and "message" in tc.args:
-                        outputs.append(tc.args["message"])
+        tool_calls = getattr(e, "tool_calls", None) or (e.get_function_calls() if hasattr(e, "get_function_calls") else None)
+        if tool_calls:
+            for tc in tool_calls:
+                tc_name = getattr(tc, "name", None)
+                tc_args = getattr(tc, "args", None)
+                if tc_name == "adk_request_input":
+                    interrupt = tc_args
+                    if isinstance(tc_args, dict) and "message" in tc_args:
+                        outputs.append(tc_args["message"])
 
     # Remove duplicates or overlapping content while preserving order
     unique_outputs = []
