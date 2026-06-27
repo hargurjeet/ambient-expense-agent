@@ -545,6 +545,11 @@ You can submit a claim in JSON/PubSub format, or just type standard requests lik
 </body>
 </html>"""
 
+# Remove any default root routes that redirect to /dev-ui/ so we can serve our own Web Chat UI at /
+for r in list(app.routes):
+    if r.path == "/":
+        app.routes.remove(r)
+
 @app.get("/", response_class=HTMLResponse)
 async def get_chat_interface():
     return HTMLResponse(content=HTML_CONTENT)
