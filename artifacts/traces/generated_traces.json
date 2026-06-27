@@ -112,7 +112,7 @@
                   "role": "model",
                   "parts": [
                     {
-                      "text": "{\n  \"risk_level\": \"low\",\n  \"reasoning\": \"The expense amount is reasonable for a standard software IDE license, and the description matches the category provided.\",\n  \"flagged\": false\n}"
+                      "text": "{\n  \"risk_level\": \"low\",\n  \"reasoning\": \"The expense amount is reasonable for professional software, the category matches the description, and there are no indicators of policy violation.\",\n  \"flagged\": false\n}"
                     }
                   ]
                 }
@@ -123,7 +123,7 @@
                   "role": "model",
                   "parts": [
                     {
-                      "text": "\u26a0\ufe0f RISK REVIEW ALERT: An expense of $150.0 submitted by bob@company.com requires approval.\nReason: Over $100.00 threshold.\nLLM Risk Level: low\nLLM Reasoning: The expense amount is reasonable for a standard software IDE license, and the description matches the category provided.\nLLM Flagged: False\n\nReply with 'approve' or 'reject' to make a decision."
+                      "text": "\u26a0\ufe0f RISK REVIEW ALERT: An expense of $150.0 submitted by bob@company.com requires approval.\nReason: Over $100.00 threshold.\nLLM Risk Level: low\nLLM Reasoning: The expense amount is reasonable for professional software, the category matches the description, and there are no indicators of policy violation.\nLLM Flagged: False\n\nReply with 'approve' or 'reject' to make a decision."
                     }
                   ]
                 }
@@ -195,7 +195,7 @@
                   "role": "model",
                   "parts": [
                     {
-                      "text": "{\n  \"risk_level\": \"High\",\n  \"reasoning\": \"The expense description contains sensitive personally identifiable information (SSN), which violates data privacy and security policies.\",\n  \"flagged\": true\n}"
+                      "text": "{\n  \"risk_level\": \"High\",\n  \"reasoning\": \"The description contains sensitive personally identifiable information (SSN), which violates data privacy and security policies. Additionally, including an SSN in an expense report is highly unusual and suggests a potential security incident or misuse of the platform.\",\n  \"flagged\": true\n}"
                     }
                   ]
                 }
@@ -206,7 +206,7 @@
                   "role": "model",
                   "parts": [
                     {
-                      "text": "\u26a0\ufe0f RISK REVIEW ALERT: An expense of $120.0 submitted by charlie@company.com requires approval.\nReason: Over $100.00 threshold.\nLLM Risk Level: High\nLLM Reasoning: The expense description contains sensitive personally identifiable information (SSN), which violates data privacy and security policies.\nLLM Flagged: True\nRedacted Data Categories: SSN\n\nReply with 'approve' or 'reject' to make a decision."
+                      "text": "\u26a0\ufe0f RISK REVIEW ALERT: An expense of $120.0 submitted by charlie@company.com requires approval.\nReason: Over $100.00 threshold.\nLLM Risk Level: High\nLLM Reasoning: The description contains sensitive personally identifiable information (SSN), which violates data privacy and security policies. Additionally, including an SSN in an expense report is highly unusual and suggests a potential security incident or misuse of the platform.\nLLM Flagged: True\nRedacted Data Categories: SSN\n\nReply with 'approve' or 'reject' to make a decision."
                     }
                   ]
                 }

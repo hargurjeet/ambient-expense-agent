@@ -124,7 +124,7 @@ def evaluate_threshold(node_input: Expense) -> Event:
 
 
 # Node 3 (Option A): Auto-approve expenses under the threshold
-def auto_approve_node(node_input: Expense):
+def auto_approve(node_input: Expense):
     msg = (
         f"🟢 AUTO-APPROVED: Expense of ${node_input.amount:.2f} submitted by "
         f"{node_input.submitter} is under the ${CONFIG['threshold']:.2f} threshold."
@@ -215,7 +215,7 @@ risk_reviewer = LlmAgent(
 
 
 # Node 4: Human-in-the-loop pause and resume logic
-async def human_approval_node(ctx: Context, node_input: dict):
+async def review_agent_node(ctx: Context, node_input: dict):
     # Retrieve the decision from resume_inputs or fallback to user_content (chat message)
     decision = None
     if ctx.resume_inputs and "approval" in ctx.resume_inputs:
@@ -269,9 +269,10 @@ async def human_approval_node(ctx: Context, node_input: dict):
 
 
 # Wrap human approval node to enable resume execution
-human_node = FunctionNode(
-    func=human_approval_node,
+review_agent = FunctionNode(
+    func=review_agent_node,
     rerun_on_resume=True,
+    name="review_agent",
 )
 
 # Connect nodes using conditional RoutingMap dict
@@ -280,13 +281,13 @@ edges = [
     (parse_expense_event, evaluate_threshold),
     (
         evaluate_threshold,
-        {"auto_approve": auto_approve_node, "risk_review": security_checkpoint},
+        {"auto_approve": auto_approve, "risk_review": security_checkpoint},
     ),
     (
         security_checkpoint,
-        {"risk_review_clean": risk_reviewer, "bypass_llm_suspicious": human_node},
+        {"risk_review_clean": risk_reviewer, "bypass_llm_suspicious": review_agent},
     ),
-    (risk_reviewer, human_node),
+    (risk_reviewer, review_agent),
 ]
 
 root_agent = Workflow(

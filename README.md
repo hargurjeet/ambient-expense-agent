@@ -2,8 +2,9 @@
 
 An ambient, event-driven ReAct agent built with the **Google Agent Development Kit (ADK) 2.0**. This agent automatically reviews, de-identifies, and routes corporate expense approvals based on financial limits and security policies.
 
-🚀 **Deployed Live Service URL:** [https://ambient-expense-agent-639117196486.us-central1.run.app](https://ambient-expense-agent-639117196486.us-central1.run.app)  
-📌 **Pub/Sub Trigger Webhook:** `https://ambient-expense-agent-639117196486.us-central1.run.app/apps/expense_agent/trigger/pubsub`
+🚀 **Deployed Live Agent Runtime ID:** `projects/164373061656/locations/us-central1/reasoningEngines/6419897211735244800`  
+📌 **GCP Project:** `ambient-expense-agent-500708`  
+📌 **Region:** `us-central1`  
 
 ---
 
@@ -42,6 +43,7 @@ ambient-expense-agent/
 ├── docs/images/              # Architecture diagrams & flowcharts
 ├── Makefile                  # Automation shortcuts
 ├── pyproject.toml            # Dependencies and tools configuration
+├── project.toml              # Buildpacks Python version configuration
 └── README.md                 # Detailed documentation
 ```
 
@@ -94,33 +96,25 @@ make grade
 
 ---
 
-## 🚀 Cloud Run Deployment
+## 🚀 Deployment
 
-To deploy this ambient agent to **Google Cloud Run** as a production web API, run these commands sequentially in your local terminal:
+### Target A: Vertex AI Agent Runtime (Reasoning Engine)
 
+To deploy the agent to Google Cloud Agent Runtime:
 ```bash
-# 1. Log in to your Google Cloud account
-gcloud auth login
-
-# 2. Set your active Google Cloud project
-gcloud config set project YOUR_PROJECT_ID
-
-# 3. Enable the required GCP APIs
-gcloud services enable run.googleapis.com \
-                       cloudbuild.googleapis.com \
-                       artifactregistry.googleapis.com \
-                       secretmanager.googleapis.com
-
-# 4. Create the Secret Manager container for your Gemini API Key
-gcloud secrets create GEMINI_API_KEY --replication-policy="automatic"
-
-# 5. Upload your Gemini API key securely to the secret
-echo -n "YOUR_GEMINI_API_KEY" | gcloud secrets versions add GEMINI_API_KEY --data-file=-
-
-# 6. Run the ADK deployment command to Cloud Run
-uv run agents-cli deploy \
-  --deployment-target cloud_run \
-  --project YOUR_PROJECT_ID \
+uv run --python 3.11 --with google-agents-cli==0.5.1 agents-cli deploy \
+  --project ambient-expense-agent-500708 \
   --region us-central1 \
-  --secrets GEMINI_API_KEY=GEMINI_API_KEY:latest
+  --no-confirm-project
+```
+
+### Target B: Google Cloud Run (Public HTTP Endpoint)
+
+To deploy the agent as a standard containerized web application on Cloud Run:
+```bash
+uv run --python 3.11 --with google-agents-cli==0.5.1 agents-cli deploy \
+  --deployment-target cloud_run \
+  --project ambient-expense-agent-500708 \
+  --region us-central1 \
+  --no-confirm-project
 ```
